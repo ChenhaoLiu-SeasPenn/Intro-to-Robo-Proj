@@ -14,11 +14,10 @@ convThr = 1e-4;
 
 %%
 %Initialization
-xStart = [];
-xGoal = [];
-theta = zeros(nSamples, 3);
+xStart = [200;200;200];
+xGoal = [100;-200;100];
+theta = [linspace(xStart(1), xGoal(1), nSamples);linspace(xStart(2), xGoal(2), nSamples);linspace(xStart(3), xGoal(3), nSamples)];
 %Initialize theta on a line
-theta = [];
 ntheta = cell(kPaths, 1);
 
 %%
@@ -31,7 +30,7 @@ A(1, 1) = -1;
 A(nSamples, nSamples) = -1;
 R = A' * A;
 Rinv = inv(R);
-M = Rinv;
+M = 1 / nSamples * Rinv ./ max(Rinv, [], 1);
 
 %%
 %Planner
