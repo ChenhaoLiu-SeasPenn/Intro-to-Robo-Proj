@@ -14,9 +14,14 @@ convThr = 1e-4;
 
 %%
 %Initialization
-xStart = [200;200;200];
-xGoal = [100;-200;100];
-theta = [linspace(xStart(1), xGoal(1), nSamples);linspace(xStart(2), xGoal(2), nSamples);linspace(xStart(3), xGoal(3), nSamples)];
+TStart = [1 0 0 200; 0 1 0 200; 0 0 1 200; 0 0 0 1];
+TGoal = [1 0 0 100; 0 1 0 -200; 0 0 1 100; 0 0 0 1];
+qStart = IK_lynx(TStart);
+qStart = qStart(1:5);
+qGoal = IK_lynx(TGoal);
+qGoal = qGoal(1:5);
+theta = [linspace(qStart(1), qGoal(1), nSamples);linspace(qStart(2), qGoal(2), nSamples);linspace(qStart(3), qGoal(3), nSamples);...
+    linspace(qStart(4), qGoal(4), nSamples);linspace(qStart(5), qGoal(5), nSamples)];
 %Initialize theta on a line
 ntheta = cell(kPaths, 1);
 
@@ -26,8 +31,6 @@ A_k = eye(nSamples - 1, nSamples - 1);
 A = -2 * eye(nSamples, nSamples);
 A(1:nSamples - 1, 2:nSamples) = A(1:nSamples - 1, 2:nSamples) + A_k;
 A(2:nSamples, 1:nSamples - 1) = A(2:nSamples, 1:nSamples - 1) + A_k;
-A(1, 1) = -1;
-A(nSamples, nSamples) = -1;
 R = A' * A;
 Rinv = inv(R);
 M = 1 / nSamples * Rinv ./ max(Rinv, [], 1);
