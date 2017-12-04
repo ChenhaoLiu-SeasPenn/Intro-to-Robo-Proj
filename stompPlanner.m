@@ -70,7 +70,7 @@ while Qtheta - QthetaOld < convThr
     theta(2 : nSamples - 1) = theta(2 : nSamples - 1) + dtheta(2 : nSamples - 1);
     
     %Compute new trajectory cost
-    Qtheta = stompCompute_PathCost(theta, env, R);
+    Qtheta = stompCompute_PathCost(theta, obsts, hole, R);
     
 end
 
