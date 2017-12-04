@@ -9,7 +9,7 @@ convThr = 1e-4;
 
 %%
 %Setup environment
-
+lynxStart();hold on;
 
 
 %%
@@ -68,10 +68,20 @@ while Qtheta - QthetaOld < convThr
     
     %Compute new trajectory cost
     Qtheta = stompCompute_PathCost(theta, env, R);
+    
 end
 
 %%
 %Visualization
-
+for i= 1: length(thetha)
+    [X,~]=updateQ(thetha(i,:));
+    plot3(X(1, 1), X(1, 2), X(1, 3), 'bo', 'markersize', 6);
+    plot3(X(2, 1), X(2, 2), X(2, 3), 'ro', 'markersize', 6);
+    plot3(X(3, 1), X(3, 2), X(3, 3), 'go', 'markersize', 6);
+    plot3(X(4, 1), X(4, 2), X(4, 3), 'yo', 'markersize', 6);
+    plot3(X(5, 1), X(5, 2), X(5, 3), 'ko', 'markersize', 6);
+    plot3(X(6, 1), X(6, 2), X(6, 3), 'mo', 'markersize', 6);
+    lynxServoSim(thetha(i,:));
+end
 %%
 %Actuate on Lynx
