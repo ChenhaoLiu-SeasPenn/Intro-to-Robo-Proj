@@ -1,4 +1,5 @@
 function [robot, radi] = stompRobot_Formation(X_mat)
+
 robots = cell(3, 2);
 % X_mat = round(X_mat);
 
