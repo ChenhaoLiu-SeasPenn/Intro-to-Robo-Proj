@@ -9,15 +9,11 @@ convThr = 1e-4;
 
 %%
 %Setup environment
-<<<<<<< HEAD
 lynxStart();hold on;
-
-=======
 %Obstacle cube
 obsts = [-1000 1000 -1000 1000 200 200];
 %Passage hole [center r]
 hole = [0 0 200 60];
->>>>>>> c078641e78ae48811d3934ab780b35d05acba695
 
 %%
 %Initialization
