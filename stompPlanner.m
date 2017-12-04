@@ -55,7 +55,7 @@ while Qtheta - QthetaOld < convThr
     pathE = zeros(kPaths, nSamples);
     pathProb = zeros(kPaths, nSamples);
     for i = 1 : kPaths
-        pathCost(i, :) = stompCompute_Cost(ntheta{i}, env);
+        pathCost(i, :) = stompCompute_Cost(ntheta{i}, obsts, hole);
     end
     pathE = stompCompute_ELambda(pathCost);
     pathProb = pathE ./ sum(pathE, 1);
