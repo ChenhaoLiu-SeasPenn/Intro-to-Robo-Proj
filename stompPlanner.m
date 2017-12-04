@@ -49,8 +49,7 @@ while Qtheta - QthetaOld < convThr
     QthetaOld = Qtheta;
     
     %Random Sampling
-    [ntheta, epsilon] = stompCompute_Random(ntheta, kPaths, Rinv);
-
+    [ntheta, epsilon] = stompCompute_NoisyTraj(10,qStart,qGoal,Rinv);
     %Compute Cost and Probability
     pathCost = zeros(kPaths, nSamples);
     pathE = zeros(kPaths, nSamples);
