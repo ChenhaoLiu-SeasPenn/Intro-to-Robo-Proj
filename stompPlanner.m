@@ -42,7 +42,7 @@ M = 1 / nSamples * Rinv ./ max(Rinv, [], 1);
 %%
 %Planner
 
-Qtheta = stompCompute_PathCost(theta, env, R);
+Qtheta = stompCompute_PathCost(theta, obsts, hole, R);
 QthetaOld = 0;
 
 while Qtheta - QthetaOld < convThr
