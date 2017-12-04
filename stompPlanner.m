@@ -5,20 +5,20 @@ clear all;close all;
 T = 5;
 nSamples = 100;
 kPaths = 20;
-convThr = 1e-4;
+convThr = 1e-6;
 
 %%
 %Setup environment
 lynxStart();hold on;
 %Obstacle cube
-obsts = [-1000 1000 -1000 1000 200 200];
+obsts = [0 1000 -1000 1000 -10 -10];
 %Passage hole [center r]
 hole = [0 0 200 60];
 
 %%
 %Initialization
 TStart = [1 0 0 100; 0 1 0 100; 0 0 1 300; 0 0 0 1];
-TGoal = [1 0 0 100; 0 1 0 -200; 0 0 1 100; 0 0 0 1];
+TGoal = [0 1 0 100; 0 0 1 -100; 1 0 0 100; 0 0 0 1];
 qStart = IK_lynx(TStart);
 qStart = qStart(1:5)
 qGoal = IK_lynx(TGoal);
@@ -38,6 +38,7 @@ A = A(:, 2:99);
 R = A' * A;
 Rinv = inv(R);
 M = 1 / nSamples * Rinv ./ max(Rinv, [], 1);
+Rinv = Rinv / sum(sum(Rinv));
 
 %%
 %Planner
@@ -56,11 +57,12 @@ while abs(Qtheta - QthetaOld) > convThr
     pathE = zeros(kPaths, nSamples);
     pathProb = zeros(kPaths, nSamples);
     for i = 1 : kPaths
-        pathCost(i, :) = stompCompute_Cost(ntheta{i}, obsts, hole);
+        pathCost(i, :) = stompCompute_Cost(ntheta{i}', obsts, hole);
     end
     pathE = stompCompute_ELambda(pathCost);
     pathProb = pathE ./ sum(pathE, 1);
-
+    pathProb(isnan(pathProb) == 1) = 0.05;
+    
     %Compute delta
     dtheta = sum(pathProb .* epsilon, 1);
     
@@ -73,11 +75,13 @@ while abs(Qtheta - QthetaOld) > convThr
     
     %Compute new trajectory cost
     Qtheta = stompCompute_PathCost(theta, obsts, hole, R);
-    
+    break
 end
 
 %%
 %Visualization
+fill3([-0 -0 1000 1000],[-1000 1000 1000 -1000],[-10 -10 -10 -10], 'r')
+fill3([-60 -60 60 60], [-60 60 60 -60], [200 200 200 200], 'b')
 for i= 1: length(theta)
     [X,~]=updateQ([theta(:,i)' 0]);
     plot3(X(1, 1), X(1, 2), X(1, 3), 'bo', 'markersize', 6);
