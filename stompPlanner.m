@@ -9,8 +9,15 @@ convThr = 1e-4;
 
 %%
 %Setup environment
+<<<<<<< HEAD
 lynxStart();hold on;
 
+=======
+%Obstacle cube
+obsts = [-1000 1000 -1000 1000 200 200];
+%Passage hole [center r]
+hole = [0 0 200 60];
+>>>>>>> c078641e78ae48811d3934ab780b35d05acba695
 
 %%
 %Initialization
@@ -31,6 +38,7 @@ A_k = eye(nSamples - 1, nSamples - 1);
 A = -2 * eye(nSamples, nSamples);
 A(1:nSamples - 1, 2:nSamples) = A(1:nSamples - 1, 2:nSamples) + A_k;
 A(2:nSamples, 1:nSamples - 1) = A(2:nSamples, 1:nSamples - 1) + A_k;
+A = A(:, 2:99);
 R = A' * A;
 Rinv = inv(R);
 M = 1 / nSamples * Rinv ./ max(Rinv, [], 1);
