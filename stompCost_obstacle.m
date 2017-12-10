@@ -5,7 +5,7 @@ cost = 0;
 robot = round(robot);
 
 for i = 1 : length(robot)
-    cost = cost + max( e + radius(i) - Env(robot(i,:)),0)
+    cost = cost + max( e + radius(i) - Env(robot(i,:)),0);
 end 
 
 end

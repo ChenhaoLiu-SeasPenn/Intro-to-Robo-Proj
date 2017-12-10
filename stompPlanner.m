@@ -16,7 +16,8 @@ Env = zeros(2000,2000,2000);
 obsts = [100 1000 -1000 1000 200 200];
 %Passage hole [center r]
 hole = [0 0 200 60];
-
+%Calculate EDT_Env
+Env_edt = sEDT_3d(Env);
 %%
 %Initialization
 TStart = [1 0 0 100; 0 1 0 100; 0 0 1 300; 0 0 0 1];
@@ -45,7 +46,7 @@ Rinv = Rinv / sum(sum(Rinv));
 %%
 %Planner
 
-Qtheta = stompCompute_PathCost(theta, obsts, hole, R);
+Qtheta = stompCompute_PathCost(theta, obsts, hole, R, Env_edt);
 QthetaOld = 0;
 
 while abs(Qtheta - QthetaOld) > convThr
@@ -59,7 +60,7 @@ while abs(Qtheta - QthetaOld) > convThr
     pathE = zeros(kPaths, nSamples);
     pathProb = zeros(kPaths, nSamples);
     for i = 1 : kPaths
-        pathCost(i, :) = stompCompute_Cost(ntheta{i}', obsts, hole);
+        pathCost(i, :) = stompCompute_Cost(ntheta{i}', obsts, hole, Env_edt);
     end
     pathE = stompCompute_ELambda(pathCost);
     pathProb = pathE ./ sum(pathE, 1);
@@ -76,7 +77,7 @@ while abs(Qtheta - QthetaOld) > convThr
 %     theta
     
     %Compute new trajectory cost
-    Qtheta = stompCompute_PathCost(theta, obsts, hole, R);
+    Qtheta = stompCompute_PathCost(theta, obsts, hole, R, Env_edt);
     
 end
 
