@@ -4,14 +4,16 @@ clear all;close all;
 %Parameters
 T = 5;
 nSamples = 100;
-kPaths = 20;
-convThr = 1e-6;
+kPaths = 100;
+convThr = 10;
 
 %%
 %Setup environment
 lynxStart();hold on;
+%Environment size
+Env = zeros(2000,2000,2000);
 %Obstacle cube
-obsts = [0 1000 -1000 1000 -10 -10];
+obsts = [100 1000 -1000 1000 200 200];
 %Passage hole [center r]
 hole = [0 0 200 60];
 
@@ -75,12 +77,12 @@ while abs(Qtheta - QthetaOld) > convThr
     
     %Compute new trajectory cost
     Qtheta = stompCompute_PathCost(theta, obsts, hole, R);
-    break
+    
 end
 
 %%
 %Visualization
-fill3([-0 -0 1000 1000],[-1000 1000 1000 -1000],[-10 -10 -10 -10], 'r')
+fill3([100 100 1000 1000],[-1000 1000 1000 -1000],[obsts(5) obsts(5) obsts(5) obsts(5)], 'r')
 fill3([-60 -60 60 60], [-60 60 60 -60], [200 200 200 200], 'b')
 for i= 1: length(theta)
     [X,~]=updateQ([theta(:,i)' 0]);

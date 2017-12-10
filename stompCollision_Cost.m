@@ -2,7 +2,7 @@ function [cost] = stompCollision_Cost(robotF, robotR, obs, hole)
 %Parameters
 r0 = 10;
 r1 = 20;
-costH = 100000;
+costH = 10;
 
 %obstacle is a surface at z = 200
 holeR = hole(4) - r0;
