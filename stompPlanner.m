@@ -11,13 +11,16 @@ convThr = 10;
 %Setup environment
 lynxStart();hold on;
 %Environment size
-Env = zeros(2000,2000,2000);
-%Obstacle cube
-obsts = [100 1000 -1000 1000 200 200];
-%Passage hole [center r]
-hole = [0 0 200 60];
+Env = zeros(1000,1000,1000);
+% %Obstacle cube
+% obsts = [100 1000 -1000 1000 200 200];
+obsts=[];
+% %Passage hole [center r]
+% hole = [0 0 200 60];
+hole=[];
 %Calculate EDT_Env
 Env_edt = sEDT_3d(Env);
+
 %%
 %Initialization
 TStart = [1 0 0 100; 0 1 0 100; 0 0 1 300; 0 0 0 1];
