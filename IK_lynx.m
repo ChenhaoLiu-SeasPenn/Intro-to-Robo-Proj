@@ -33,13 +33,13 @@ th1 = atan2(yw,xw);
 r = sqrt(xw^2 + yw^2);
 s = zw - L1;
 D = (r^2 + s^2 - L2^2 - L3^2)/(-2*L2*L3);
-
-if D<=0
-    disp('error')
-    is_possible = false;
-    q = [0 0 0 0 0 0];
-    return
-end
+% 
+% if D<=0
+%     disp('error')
+%     is_possible = false;
+%     q = [0 0 0 0 0 0];
+%     return
+% end
 
 
 %Calculates theta 3

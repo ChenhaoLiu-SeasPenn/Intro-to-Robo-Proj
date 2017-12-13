@@ -5,7 +5,7 @@ clear all;close all;
 T = 5;
 nSamples = 100;
 kPaths = 100;
-convThr = 10;
+convThr = 1;
 
 %%
 %Setup environment
@@ -25,8 +25,8 @@ Env_edt = prod(voxel_size) ^ (1/3) * sEDT_3d(Env);
 
 %%
 %Initialization
-TStart = [1 0 0 100; 0 1 0 100; 0 0 1 300; 0 0 0 1];
-TGoal = [0 1 0 100; 0 0 1 -100; 1 0 0 100; 0 0 0 1];
+TStart = [1 0 0 263.5; 0 1 0 0; 0 0 1 222.25; 0 0 0 1];
+TGoal = [0 1 0 130; 0 0 1 180; 1 0 0 280; 0 0 0 1];
 qStart = IK_lynx(TStart);
 qStart = qStart(1:5)
 qGoal = IK_lynx(TGoal);
@@ -85,11 +85,13 @@ while abs(Qtheta - QthetaOld) > convThr
     Qtheta = stompCompute_PathCost(theta, obsts, hole, R, Env_edt);
     
 end
+Qtheta
+disp('We finished!!!!!!!!!!!!!!!');
 
 %%
 %Visualization
-fill3([100 100 1000 1000],[-1000 1000 1000 -1000],[obsts(5) obsts(5) obsts(5) obsts(5)], 'r')
-fill3([-60 -60 60 60], [-60 60 60 -60], [200 200 200 200], 'b')
+% fill3([100 100 1000 1000],[-1000 1000 1000 -1000],[], 'r')
+% fill3([-60 -60 60 60], [-60 60 60 -60], [200 200 200 200], 'b')
 for i= 1: length(theta)
     [X,~]=updateQ([theta(:,i)' 0]);
     plot3(X(1, 1), X(1, 2), X(1, 3), 'bo', 'markersize', 6);
