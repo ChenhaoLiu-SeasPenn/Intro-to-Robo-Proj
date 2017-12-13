@@ -5,7 +5,7 @@ clear all;close all;
 T = 5;
 nSamples = 100;
 kPaths = 20;
-convThr = 0;
+convThr = 1;
 
 %%
 %Setup environment
@@ -20,13 +20,13 @@ obsts=[];
 hole=[];
 %Calculate EDT_Env
 voxel_size = [10, 10, 10];
-Env = constructEnv(voxel_size);
+[Env,Cube] = constructEnv(voxel_size);
 Env_edt = prod(voxel_size) ^ (1/3) * sEDT_3d(Env);
 
 %%
 %Initialization
 TStart = [0 1 0 130; 0 0 1 180; 1 0 0 280; 0 0 0 1];
-TGoal = [1 0 0 263.5; 0 1 0 0; 0 0 1 122.25; 0 0 0 1];
+TGoal = [1 0 0 263.5; 0 1 0 -50; 0 0 1 122.25; 0 0 0 1];
 qStart = IK_lynx(TStart);
 qStart = qStart(1:5)
 qGoal = IK_lynx(TGoal);
@@ -97,7 +97,10 @@ toc
 disp(['iteration:',num2str(ite)]);
 
 % fill3([100 100 1000 1000],[-1000 1000 1000 -1000],[], 'r')
- fill3([60 60 335 335], [-100 375  375 -100 ], [200 200 200 200], 'b')
+ fill3([Cube(1,1) Cube(1,1) Cube(1,1)+Cube(2,1) Cube(1,1)+Cube(2,1)], [Cube(1,2) Cube(1,2)+Cube(2,2)... 
+     Cube(1,2)+Cube(2,2) Cube(1,2) ], [Cube(1,3) Cube(1,3) Cube(1,3) Cube(1,3)], 'b');
+  fill3([Cube(1,1) Cube(1,1) Cube(1,1)+Cube(2,1) Cube(1,1)+Cube(2,1)], [Cube(1,2) Cube(1,2)+Cube(2,2)... 
+     Cube(1,2)+Cube(2,2) Cube(1,2) ], [Cube(1,3)+Cube(2,3) Cube(1,3)+Cube(2,3) Cube(1,3)+Cube(2,3) Cube(1,3)+Cube(2,3)], 'b')
 for i= 1: length(theta)
     [X,~]=updateQ([theta(:,i)' 0]);
     plot3(X(1, 1), X(1, 2), X(1, 3), 'bo', 'markersize', 6);
@@ -107,6 +110,7 @@ for i= 1: length(theta)
     plot3(X(5, 1), X(5, 2), X(5, 3), 'ko', 'markersize', 6);
     plot3(X(6, 1), X(6, 2), X(6, 3), 'mo', 'markersize', 6);
     lynxServoSim([theta(:,i)' 0]);
+    pause(0.01);
 end
 %%
 %Actuate on Lynx

@@ -1,4 +1,4 @@
-function Env = constructEnv(voxel_size)
+function [Env,cube_2] = constructEnv(voxel_size)
 % Environment construction here
 % Constructing binary map for discretized 3D voxels in workspace
 % For simplicity, no API provided, user directly edit this file
@@ -16,7 +16,8 @@ Env = zeros(Env_size(2, 2) / voxel_size(2), Env_size(2, 1) / voxel_size(1), Env_
 
 %%
 %Follow this if you want to add a cube
-cube = [150, -100, 100;275, 425, 100]; % Follows the env_size
+cube = [150, 0, 100;275, 225, 100]; % Follows the env_size
+cube_2 = cube;
 cube = [floor(cube(1, :)./voxel_size); ceil((cube(1, :) + cube(2, :))./voxel_size)] + -Env_size(1, :) ./ voxel_size;
 [x, y, z] = meshgrid(cube(1, 2):cube(2, 2), cube(1, 1):cube(2, 1), cube(1, 3):cube(2, 3));
 Env(sub2ind([Env_size(2, 2) / voxel_size(2), Env_size(2, 1) / voxel_size(1), Env_size(2, 3) / voxel_size(3)], x, y, z)) = 1;
