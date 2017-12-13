@@ -11,7 +11,7 @@ convThr = 10;
 %Setup environment
 lynxStart();hold on;
 %Environment size
-Env = zeros(1000,1000,1000);
+Env = zeros(100,100,100);
 % %Obstacle cube
 % obsts = [100 1000 -1000 1000 200 200];
 obsts=[];
@@ -19,7 +19,9 @@ obsts=[];
 % hole = [0 0 200 60];
 hole=[];
 %Calculate EDT_Env
-Env_edt = sEDT_3d(Env);
+voxel_size = [10, 10, 10];
+Env = constructEnv(voxel_size);
+Env_edt = prod(voxel_size) ^ (1/3) * sEDT_3d(Env);
 
 %%
 %Initialization
