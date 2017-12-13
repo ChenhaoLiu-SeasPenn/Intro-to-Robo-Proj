@@ -92,9 +92,9 @@ disp('We finished!!!!!!!!!!!!!!!');
 toc
 %%
 %Visualization
-plotObstacle([140 140;130 130;280 280],35,1);
+plotObstacle([140 140;180 180;280 280],35,1);
 plotObstacle([220 220;100 100;200 200],35,1);
-disp(['iteration:',tostring(ite)]);
+disp(['iteration:',num2str(ite)]);
 
 % fill3([100 100 1000 1000],[-1000 1000 1000 -1000],[], 'r')
 % fill3([-60 -60 60 60], [-60 60 60 -60], [200 200 200 200], 'b')
