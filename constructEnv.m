@@ -6,7 +6,7 @@ function Env = constructEnv(voxel_size)
 %%
 %Env Init
 % voxel_size = [10, 10, 10];
-Env_size = [-100, -600, -100; 600, 1200, 700]; %Front-top-left point for 1st row, length-wigth-height for second
+Env_size = [-500, -600, -300; 1000, 1200, 900]; %Front-top-left point for 1st row, length-wigth-height for second
 %All free space
 Env = zeros(Env_size(2, 2) / voxel_size(2), Env_size(2, 1) / voxel_size(1), Env_size(2, 3) / voxel_size(3));
 %XYZ representation for each voxel
@@ -16,24 +16,24 @@ Env = zeros(Env_size(2, 2) / voxel_size(2), Env_size(2, 1) / voxel_size(1), Env_
 
 %%
 %Follow this if you want to add a cube
-% cube = [100, 100, 100;75, 60, 112]; % Follows the env_size
-% cube = [floor(cube(1, :)./voxel_size); ceil((cube(1, :) + cube(2, :))./voxel_size)] + -Env_size(1, :) ./ voxel_size;
-% [x, y, z] = meshgrid(cube(1, 2):cube(2, 2), cube(1, 1):cube(2, 1), cube(1, 3):cube(2, 3));
-% Env(sub2ind([Env_size(2, 2) / voxel_size(2), Env_size(2, 1) / voxel_size(1), Env_size(2, 3) / voxel_size(3)], x, y, z)) = 1;
+cube = [150, -100, 100;275, 425, 100]; % Follows the env_size
+cube = [floor(cube(1, :)./voxel_size); ceil((cube(1, :) + cube(2, :))./voxel_size)] + -Env_size(1, :) ./ voxel_size;
+[x, y, z] = meshgrid(cube(1, 2):cube(2, 2), cube(1, 1):cube(2, 1), cube(1, 3):cube(2, 3));
+Env(sub2ind([Env_size(2, 2) / voxel_size(2), Env_size(2, 1) / voxel_size(1), Env_size(2, 3) / voxel_size(3)], x, y, z)) = 1;
 
-%%
-%Follow this if you want to add a sphere/ellipse
-sphere = [140, 180, 280;1, 1, 1];
-r = 60;
-k = (sphere(2, 1) * (X - sphere(1, 1))).^ 2 + (sphere(2, 2) * (Y - sphere(1, 2))).^2 + (sphere(2, 3) * (Z - sphere(1, 3))).^2 < (r ^ 2);
-Env(k == 1) = 1;
-
-%%
-%Follow this if you want to add a sphere/ellipse
-sphere = [220, 100, 200;1, 1, 1];
-r = 60;
-k = (sphere(2, 1) * (X - sphere(1, 1))).^ 2 + (sphere(2, 2) * (Y - sphere(1, 2))).^2 + (sphere(2, 3) * (Z - sphere(1, 3))).^2 < (r ^ 2);
-Env(k == 1) = 1;
+% %%
+% %Follow this if you want to add a sphere/ellipse
+% sphere = [140, 180, 280;1, 1, 1];
+% r = 60;
+% k = (sphere(2, 1) * (X - sphere(1, 1))).^ 2 + (sphere(2, 2) * (Y - sphere(1, 2))).^2 + (sphere(2, 3) * (Z - sphere(1, 3))).^2 < (r ^ 2);
+% Env(k == 1) = 1;
+% 
+% %%
+% %Follow this if you want to add a sphere/ellipse
+% sphere = [220, 100, 200;1, 1, 1];
+% r = 60;
+% k = (sphere(2, 1) * (X - sphere(1, 1))).^ 2 + (sphere(2, 2) * (Y - sphere(1, 2))).^2 + (sphere(2, 3) * (Z - sphere(1, 3))).^2 < (r ^ 2);
+% Env(k == 1) = 1;
 
 %%
 %Add arbitary obstacles here

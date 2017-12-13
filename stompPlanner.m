@@ -4,8 +4,8 @@ clear all;close all;
 %Parameters
 T = 5;
 nSamples = 100;
-kPaths = 100;
-convThr = 1;
+kPaths = 20;
+convThr = 0;
 
 %%
 %Setup environment
@@ -25,8 +25,8 @@ Env_edt = prod(voxel_size) ^ (1/3) * sEDT_3d(Env);
 
 %%
 %Initialization
-TStart = [1 0 0 263.5; 0 1 0 0; 0 0 1 222.25; 0 0 0 1];
-TGoal = [0 1 0 130; 0 0 1 180; 1 0 0 280; 0 0 0 1];
+TStart = [0 1 0 130; 0 0 1 180; 1 0 0 280; 0 0 0 1];
+TGoal = [1 0 0 263.5; 0 1 0 0; 0 0 1 122.25; 0 0 0 1];
 qStart = IK_lynx(TStart);
 qStart = qStart(1:5)
 qGoal = IK_lynx(TGoal);
@@ -92,12 +92,12 @@ disp('We finished!!!!!!!!!!!!!!!');
 toc
 %%
 %Visualization
-plotObstacle([140 140;180 180;280 280],35,1);
-plotObstacle([220 220;100 100;200 200],35,1);
+% plotObstacle([140 140;180 180;280 280],35,1);
+% plotObstacle([220 220;100 100;200 200],35,1);
 disp(['iteration:',num2str(ite)]);
 
 % fill3([100 100 1000 1000],[-1000 1000 1000 -1000],[], 'r')
-% fill3([-60 -60 60 60], [-60 60 60 -60], [200 200 200 200], 'b')
+ fill3([60 60 335 335], [-100 375  375 -100 ], [200 200 200 200], 'b')
 for i= 1: length(theta)
     [X,~]=updateQ([theta(:,i)' 0]);
     plot3(X(1, 1), X(1, 2), X(1, 3), 'bo', 'markersize', 6);

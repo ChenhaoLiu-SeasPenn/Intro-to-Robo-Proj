@@ -9,7 +9,7 @@ sigma=R;
 Traj_N=cell(1,Num_k);
 
 for i = 1 : length(R)
-    gap = Traj/n_Samples*(i);
+    gap = Traj/100*(i);
     Step=[Step; Start+gap];
 end
 

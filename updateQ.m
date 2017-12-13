@@ -15,6 +15,7 @@
 function [X, T] = updateQ(q)
 
 T = zeros(4,4,6);
+% T = 0;
 
 %Important parameters for the robot
 L1 = 3*25.4;          %base height (in mm)
