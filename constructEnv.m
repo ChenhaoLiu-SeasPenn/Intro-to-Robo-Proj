@@ -6,7 +6,7 @@ function Env = constructEnv(voxel_size)
 %%
 %Env Init
 % voxel_size = [10, 10, 10];
-Env_size = [-100, -500, -100; 600, 1000, 700]; %Front-top-left point for 1st row, length-wigth-height for second
+Env_size = [-100, -600, -100; 600, 1200, 700]; %Front-top-left point for 1st row, length-wigth-height for second
 %All free space
 Env = zeros(Env_size(2, 2) / voxel_size(2), Env_size(2, 1) / voxel_size(1), Env_size(2, 3) / voxel_size(3));
 %XYZ representation for each voxel
@@ -23,17 +23,17 @@ Env = zeros(Env_size(2, 2) / voxel_size(2), Env_size(2, 1) / voxel_size(1), Env_
 
 %%
 %Follow this if you want to add a sphere/ellipse
-sphere = [220, 100, 20;1, 1, 1];
+sphere = [140, 130, 280;1, 1, 1];
 r = 60;
 k = (sphere(2, 1) * (X - sphere(1, 1))).^ 2 + (sphere(2, 2) * (Y - sphere(1, 2))).^2 + (sphere(2, 3) * (Z - sphere(1, 3))).^2 < (r ^ 2);
 Env(k == 1) = 1;
 
 %%
 %Follow this if you want to add a sphere/ellipse
-% sphere = [220, 100, 200;1, 1, 1];
-% r = 60;
-% k = (sphere(2, 1) * (X - sphere(1, 1))).^ 2 + (sphere(2, 2) * (Y - sphere(1, 2))).^2 + (sphere(2, 3) * (Z - sphere(1, 3))).^2 < (r ^ 2);
-% Env(k == 1) = 1;
+sphere = [220, 100, 200;1, 1, 1];
+r = 60;
+k = (sphere(2, 1) * (X - sphere(1, 1))).^ 2 + (sphere(2, 2) * (Y - sphere(1, 2))).^2 + (sphere(2, 3) * (Z - sphere(1, 3))).^2 < (r ^ 2);
+Env(k == 1) = 1;
 
 %%
 %Add arbitary obstacles here
