@@ -5,7 +5,7 @@ clear all;close all;
 T = 5;
 nSamples = 100;
 kPaths = 20;
-convThr = .1;
+convThr = 10;
 
 %%
 %Setup environment
@@ -25,8 +25,8 @@ Env_edt = prod(voxel_size) ^ (1/3) * sEDT_3d(Env);
 
 %%
 %Initialization
-TStart = [1 0 0 240; 0 1 0 -120; 0 0 1 180; 0 0 0 1];
-TGoal = [1 0 0 263.5; 0 1 0 150; 0 0 1 200; 0 0 0 1];
+TStart = [1 0 0 240; 0 1 0 0; 0 0 1 180; 0 0 0 1];
+TGoal = [1 0 0 163.5; 0 1 0 150; 0 0 1 240; 0 0 0 1];
 qStart = IK_lynx(TStart);
 qStart = qStart(1:5);
 qGoal = IK_lynx(TGoal);
@@ -85,7 +85,7 @@ while abs(Qtheta - QthetaOld) > convThr
     
     %Compute new trajectory cost
     Qtheta = stompCompute_PathCost(theta, obsts, hole, R, Env_edt);
-    %Qtheta
+    Qtheta
     Qtheta_all=[Qtheta_all Qtheta];
     
 end
@@ -94,23 +94,23 @@ disp('We finished!!!!!!!!!!!!!!!');
 toc
 %%
 %Visualization
-% plotObstacle([140 140;180 180;280 280],35,1);
-% plotObstacle([220 220;100 100;200 200],35,1);
+plotObstacle([140 140;180 180;280 280],35,1);
+plotObstacle([220 220;100 100;100 100],35,1);
 disp(['iteration:',num2str(ite)]);
 
 %plot obstacle Cube
-fill3([Cube(1,1) Cube(1,1) Cube(1,1)+Cube(2,1) Cube(1,1)+Cube(2,1)], [Cube(1,2) Cube(1,2)+Cube(2,2)... 
-     Cube(1,2)+Cube(2,2) Cube(1,2) ], [Cube(1,3) Cube(1,3) Cube(1,3) Cube(1,3)], 'y');
-fill3([Cube(1,1) Cube(1,1) Cube(1,1)+Cube(2,1) Cube(1,1)+Cube(2,1)], [Cube(1,2) Cube(1,2)+Cube(2,2)... 
-     Cube(1,2)+Cube(2,2) Cube(1,2) ], [Cube(1,3)+Cube(2,3) Cube(1,3)+Cube(2,3) Cube(1,3)+Cube(2,3) Cube(1,3)+Cube(2,3)], 'y');
-fill3([Cube(1,1) Cube(1,1) Cube(1,1) Cube(1,1)], [Cube(1,2) Cube(1,2)+Cube(2,2)... 
-     Cube(1,2)+Cube(2,2) Cube(1,2) ], [Cube(1,3) Cube(1,3) Cube(1,3)+Cube(2,3) Cube(1,3)+Cube(2,3)], 'y');
-fill3([Cube(1,1)+Cube(2,1) Cube(1,1)+Cube(2,1) Cube(1,1)+Cube(2,1) Cube(1,1)+Cube(2,1)], [Cube(1,2) Cube(1,2)+Cube(2,2)... 
-     Cube(1,2)+Cube(2,2) Cube(1,2) ], [Cube(1,3) Cube(1,3) Cube(1,3)+Cube(2,3) Cube(1,3)+Cube(2,3)], 'y');
-fill3([Cube(1,1) Cube(1,1)+Cube(2,1) Cube(1,1)+Cube(2,1) Cube(1,1)], [Cube(1,2) Cube(1,2)... 
-     Cube(1,2) Cube(1,2) ], [Cube(1,3) Cube(1,3) Cube(1,3)+Cube(2,3) Cube(1,3)+Cube(2,3)], 'y');
-fill3([Cube(1,1) Cube(1,1)+Cube(2,1) Cube(1,1)+Cube(2,1) Cube(1,1)], [Cube(1,2)+Cube(2,2) Cube(1,2)+Cube(2,2)... 
-     Cube(1,2)+Cube(2,2) Cube(1,2)+Cube(2,2) ], [Cube(1,3) Cube(1,3) Cube(1,3)+Cube(2,3) Cube(1,3)+Cube(2,3)], 'y');
+% fill3([Cube(1,1) Cube(1,1) Cube(1,1)+Cube(2,1) Cube(1,1)+Cube(2,1)], [Cube(1,2) Cube(1,2)+Cube(2,2)... 
+%      Cube(1,2)+Cube(2,2) Cube(1,2) ], [Cube(1,3) Cube(1,3) Cube(1,3) Cube(1,3)], 'y');
+% fill3([Cube(1,1) Cube(1,1) Cube(1,1)+Cube(2,1) Cube(1,1)+Cube(2,1)], [Cube(1,2) Cube(1,2)+Cube(2,2)... 
+%      Cube(1,2)+Cube(2,2) Cube(1,2) ], [Cube(1,3)+Cube(2,3) Cube(1,3)+Cube(2,3) Cube(1,3)+Cube(2,3) Cube(1,3)+Cube(2,3)], 'y');
+% fill3([Cube(1,1) Cube(1,1) Cube(1,1) Cube(1,1)], [Cube(1,2) Cube(1,2)+Cube(2,2)... 
+%      Cube(1,2)+Cube(2,2) Cube(1,2) ], [Cube(1,3) Cube(1,3) Cube(1,3)+Cube(2,3) Cube(1,3)+Cube(2,3)], 'y');
+% fill3([Cube(1,1)+Cube(2,1) Cube(1,1)+Cube(2,1) Cube(1,1)+Cube(2,1) Cube(1,1)+Cube(2,1)], [Cube(1,2) Cube(1,2)+Cube(2,2)... 
+%      Cube(1,2)+Cube(2,2) Cube(1,2) ], [Cube(1,3) Cube(1,3) Cube(1,3)+Cube(2,3) Cube(1,3)+Cube(2,3)], 'y');
+% fill3([Cube(1,1) Cube(1,1)+Cube(2,1) Cube(1,1)+Cube(2,1) Cube(1,1)], [Cube(1,2) Cube(1,2)... 
+%      Cube(1,2) Cube(1,2) ], [Cube(1,3) Cube(1,3) Cube(1,3)+Cube(2,3) Cube(1,3)+Cube(2,3)], 'y');
+% fill3([Cube(1,1) Cube(1,1)+Cube(2,1) Cube(1,1)+Cube(2,1) Cube(1,1)], [Cube(1,2)+Cube(2,2) Cube(1,2)+Cube(2,2)... 
+%      Cube(1,2)+Cube(2,2) Cube(1,2)+Cube(2,2) ], [Cube(1,3) Cube(1,3) Cube(1,3)+Cube(2,3) Cube(1,3)+Cube(2,3)], 'y');
 
 
 for i= 1: length(theta)
