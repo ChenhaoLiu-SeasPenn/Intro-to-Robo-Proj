@@ -5,7 +5,7 @@ clear all;close all;
 T = 5;
 nSamples = 100;
 kPaths = 20;
-convThr = 1;
+convThr = .1;
 
 %%
 %Setup environment
@@ -25,8 +25,8 @@ Env_edt = prod(voxel_size) ^ (1/3) * sEDT_3d(Env);
 
 %%
 %Initialization
-TStart = [0 1 0 130; 0 0 1 180; 1 0 0 280; 0 0 0 1];
-TGoal = [1 0 0 263.5; 0 1 0 -50; 0 0 1 122.25; 0 0 0 1];
+TStart = [1 0 0 240; 0 1 0 -120; 0 0 1 180; 0 0 0 1];
+TGoal = [1 0 0 263.5; 0 1 0 150; 0 0 1 200; 0 0 0 1];
 qStart = IK_lynx(TStart);
 qStart = qStart(1:5)
 qGoal = IK_lynx(TGoal);
@@ -55,9 +55,9 @@ Qtheta = stompCompute_PathCost(theta, obsts, hole, R, Env_edt);
 QthetaOld = 0;
 tic
 ite=0;
+Qtheta_all=[];
 while abs(Qtheta - QthetaOld) > convThr
     ite=ite+1;
-    Qtheta
     QthetaOld = Qtheta;
     
     %Random Sampling
@@ -85,6 +85,8 @@ while abs(Qtheta - QthetaOld) > convThr
     
     %Compute new trajectory cost
     Qtheta = stompCompute_PathCost(theta, obsts, hole, R, Env_edt);
+    Qtheta
+    Qtheta_all=[Qtheta_all Qtheta];
     
 end
 Qtheta
@@ -96,21 +98,37 @@ toc
 % plotObstacle([220 220;100 100;200 200],35,1);
 disp(['iteration:',num2str(ite)]);
 
-% fill3([100 100 1000 1000],[-1000 1000 1000 -1000],[], 'r')
- fill3([Cube(1,1) Cube(1,1) Cube(1,1)+Cube(2,1) Cube(1,1)+Cube(2,1)], [Cube(1,2) Cube(1,2)+Cube(2,2)... 
-     Cube(1,2)+Cube(2,2) Cube(1,2) ], [Cube(1,3) Cube(1,3) Cube(1,3) Cube(1,3)], 'b');
-  fill3([Cube(1,1) Cube(1,1) Cube(1,1)+Cube(2,1) Cube(1,1)+Cube(2,1)], [Cube(1,2) Cube(1,2)+Cube(2,2)... 
-     Cube(1,2)+Cube(2,2) Cube(1,2) ], [Cube(1,3)+Cube(2,3) Cube(1,3)+Cube(2,3) Cube(1,3)+Cube(2,3) Cube(1,3)+Cube(2,3)], 'b')
+%plot obstacle Cube
+fill3([Cube(1,1) Cube(1,1) Cube(1,1)+Cube(2,1) Cube(1,1)+Cube(2,1)], [Cube(1,2) Cube(1,2)+Cube(2,2)... 
+     Cube(1,2)+Cube(2,2) Cube(1,2) ], [Cube(1,3) Cube(1,3) Cube(1,3) Cube(1,3)], 'y');
+fill3([Cube(1,1) Cube(1,1) Cube(1,1)+Cube(2,1) Cube(1,1)+Cube(2,1)], [Cube(1,2) Cube(1,2)+Cube(2,2)... 
+     Cube(1,2)+Cube(2,2) Cube(1,2) ], [Cube(1,3)+Cube(2,3) Cube(1,3)+Cube(2,3) Cube(1,3)+Cube(2,3) Cube(1,3)+Cube(2,3)], 'y');
+fill3([Cube(1,1) Cube(1,1) Cube(1,1) Cube(1,1)], [Cube(1,2) Cube(1,2)+Cube(2,2)... 
+     Cube(1,2)+Cube(2,2) Cube(1,2) ], [Cube(1,3) Cube(1,3) Cube(1,3)+Cube(2,3) Cube(1,3)+Cube(2,3)], 'y');
+fill3([Cube(1,1)+Cube(2,1) Cube(1,1)+Cube(2,1) Cube(1,1)+Cube(2,1) Cube(1,1)+Cube(2,1)], [Cube(1,2) Cube(1,2)+Cube(2,2)... 
+     Cube(1,2)+Cube(2,2) Cube(1,2) ], [Cube(1,3) Cube(1,3) Cube(1,3)+Cube(2,3) Cube(1,3)+Cube(2,3)], 'y');
+fill3([Cube(1,1) Cube(1,1)+Cube(2,1) Cube(1,1)+Cube(2,1) Cube(1,1)], [Cube(1,2) Cube(1,2)... 
+     Cube(1,2) Cube(1,2) ], [Cube(1,3) Cube(1,3) Cube(1,3)+Cube(2,3) Cube(1,3)+Cube(2,3)], 'y');
+fill3([Cube(1,1) Cube(1,1)+Cube(2,1) Cube(1,1)+Cube(2,1) Cube(1,1)], [Cube(1,2)+Cube(2,2) Cube(1,2)+Cube(2,2)... 
+     Cube(1,2)+Cube(2,2) Cube(1,2)+Cube(2,2) ], [Cube(1,3) Cube(1,3) Cube(1,3)+Cube(2,3) Cube(1,3)+Cube(2,3)], 'y');
+
+
 for i= 1: length(theta)
     [X,~]=updateQ([theta(:,i)' 0]);
-    plot3(X(1, 1), X(1, 2), X(1, 3), 'bo', 'markersize', 6);
-    plot3(X(2, 1), X(2, 2), X(2, 3), 'ro', 'markersize', 6);
-    plot3(X(3, 1), X(3, 2), X(3, 3), 'go', 'markersize', 6);
-    plot3(X(4, 1), X(4, 2), X(4, 3), 'yo', 'markersize', 6);
-    plot3(X(5, 1), X(5, 2), X(5, 3), 'ko', 'markersize', 6);
-    plot3(X(6, 1), X(6, 2), X(6, 3), 'mo', 'markersize', 6);
+    plot3(X(1, 1), X(1, 2), X(1, 3), 'b.', 'markersize', 15);
+    plot3(X(2, 1), X(2, 2), X(2, 3), 'r.', 'markersize', 15);
+    plot3(X(3, 1), X(3, 2), X(3, 3), 'g.', 'markersize', 15);
+    plot3(X(4, 1), X(4, 2), X(4, 3), 'y.', 'markersize', 15);
+    plot3(X(5, 1), X(5, 2), X(5, 3), 'k.', 'markersize', 15);
+    plot3(X(6, 1), X(6, 2), X(6, 3), 'm.', 'markersize', 15);
     lynxServoSim([theta(:,i)' 0]);
     pause(0.01);
 end
+figure;
+plot(Qtheta_all);
+ylabel('Overall cost')
+xlabel('Iteration')
+
+
 %%
 %Actuate on Lynx
