@@ -32,7 +32,7 @@ Env(k == 1) = 1;
 % 
 % %%
 % %Follow this if you want to add a sphere/ellipse
-sphere = [220, 100, 100;1, 1, 1];
+sphere = [220, 100, 150;1, 1, 1];
 r = 60;
 k = (sphere(2, 1) * (X - sphere(1, 1))).^ 2 + (sphere(2, 2) * (Y - sphere(1, 2))).^2 + (sphere(2, 3) * (Z - sphere(1, 3))).^2 < (r ^ 2);
 Env(k == 1) = 1;

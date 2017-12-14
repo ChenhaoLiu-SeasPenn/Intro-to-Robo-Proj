@@ -95,7 +95,7 @@ toc
 %%
 %Visualization
 plotObstacle([140 140;180 180;280 280],35,1);
-plotObstacle([220 220;100 100;100 100],35,1);
+plotObstacle([220 220;100 100;150 150],35,1);
 disp(['iteration:',num2str(ite)]);
 
 %plot obstacle Cube
