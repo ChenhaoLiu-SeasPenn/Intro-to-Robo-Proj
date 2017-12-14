@@ -28,9 +28,9 @@ Env_edt = prod(voxel_size) ^ (1/3) * sEDT_3d(Env);
 TStart = [1 0 0 240; 0 1 0 -120; 0 0 1 180; 0 0 0 1];
 TGoal = [1 0 0 263.5; 0 1 0 150; 0 0 1 200; 0 0 0 1];
 qStart = IK_lynx(TStart);
-qStart = qStart(1:5)
+qStart = qStart(1:5);
 qGoal = IK_lynx(TGoal);
-qGoal = qGoal(1:5)
+qGoal = qGoal(1:5);
 theta = [linspace(qStart(1), qGoal(1), nSamples);linspace(qStart(2), qGoal(2), nSamples);linspace(qStart(3), qGoal(3), nSamples);...
     linspace(qStart(4), qGoal(4), nSamples);linspace(qStart(5), qGoal(5), nSamples)];
 %Initialize theta on a line
@@ -85,11 +85,11 @@ while abs(Qtheta - QthetaOld) > convThr
     
     %Compute new trajectory cost
     Qtheta = stompCompute_PathCost(theta, obsts, hole, R, Env_edt);
-    Qtheta
+    %Qtheta
     Qtheta_all=[Qtheta_all Qtheta];
     
 end
-Qtheta
+%Qtheta
 disp('We finished!!!!!!!!!!!!!!!');
 toc
 %%
