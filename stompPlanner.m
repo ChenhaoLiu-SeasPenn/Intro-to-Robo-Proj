@@ -85,7 +85,7 @@ while abs(Qtheta - QthetaOld) > convThr
     
     %Compute new trajectory cost
     Qtheta = stompCompute_PathCost(theta, obsts, hole, R, Env_edt);
-    %Qtheta
+    disp(['Cost:',num2str(Qtheta)]);
     Qtheta_all=[Qtheta_all Qtheta];
     
 end
